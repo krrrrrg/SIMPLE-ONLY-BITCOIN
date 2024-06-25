@@ -1,0 +1,397 @@
+알겠습니다. 이 프로젝트를 기반으로 HTML, CSS, JavaScript에 대해 초보자도 쉽게 이해할 수 있도록 PDF 강의를 작성해드리겠습니다. 이 강의는 각 파일에 포함된 코드와 기능을 설명하고, 프로젝트를 어떻게 구성했는지, 그리고 각 기능이 어떤 역할을 하는지 디테일하게 설명할 것입니다.
+
+### 강의 PDF 목차
+
+1. **소개**
+    - 프로젝트 개요
+    - 사용된 기술 스택
+
+2. **HTML**
+    - 기본 구조 설명
+    - 각 요소의 역할
+
+3. **CSS**
+    - 스타일링 기본
+    - 클래스와 ID 선택자의 차이
+    - 레이아웃 구성
+
+4. **JavaScript**
+    - 기본 문법
+    - 비동기 함수 (async/await)
+    - API 호출
+    - DOM 조작
+
+5. **프로젝트 구성 요소 설명**
+    - 환율 가져오기 함수
+    - 비트코인 가격 가져오기 함수 (바이낸스, 업비트)
+    - 김치 프리미엄 계산 함수
+    - 테마 전환 기능
+    - TradingView 차트
+
+6. **전체 코드 설명**
+    - HTML, CSS, JavaScript 파일 통합 설명
+    - 실행 흐름
+
+7. **추가 학습 자료**
+    - 추천 도서
+    - 온라인 강의
+    - 실습 프로젝트
+
+이제, 이 내용을 포함한 PDF 파일을 작성해보겠습니다. 잠시만 기다려주세요.
+
+---
+
+PDF 파일 작성을 위해 필요한 내용을 Markdown 형식으로 작성한 후 PDF로 변환하겠습니다.
+
+#### 1. 소개
+
+##### 프로젝트 개요
+이 프로젝트는 비트코인 맥시멀리스트를 위한 웹페이지를 만드는 프로젝트입니다. 웹페이지에서는 바이낸스와 업비트의 비트코인 가격, 환율, 김치 프리미엄, 비트코인 총 채굴량을 실시간으로 보여줍니다. 또한 다크 모드와 라이트 모드 전환 기능도 포함되어 있습니다.
+
+##### 사용된 기술 스택
+- **HTML**: 웹페이지의 구조를 정의하는 마크업 언어
+- **CSS**: 웹페이지의 스타일을 정의하는 스타일링 언어
+- **JavaScript**: 웹페이지의 동작을 정의하는 스크립팅 언어
+
+#### 2. HTML
+
+##### 기본 구조 설명
+HTML (HyperText Markup Language)은 웹페이지의 구조를 정의하는 마크업 언어입니다. 이번 프로젝트의 HTML 파일은 다음과 같은 구조를 가지고 있습니다.
+
+html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>비트코인 맥시멀리스트를 위한 사이트</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+</head>
+<body class="light-mode">
+    <h1>비트코인 즐겨찾기</h1>
+    <button id="theme-toggle">다크 모드</button>
+    <div class="container">
+        <div class="price">
+            바이낸스 비트코인 가격: <span id="binance-price">불러오는 중...</span>
+        </div>
+        <div class="price">
+            업비트 비트코인 가격: <span id="upbit-price">불러오는 중...</span>
+        </div>
+        <div class="price">
+            현재 환율 (1 USD = KRW): <span id="exchange-rate">불러오는 중...</span>
+        </div>
+        <div class="price">
+            김치 프리미엄: <span id="kimchi-premium">불러오는 중...</span>
+        </div>
+        <div class="price">
+            비트코인 총 채굴량: <span id="total-mined">불러오는 중...</span>
+        </div>
+        <div id="tradingview-chart" class="chart-container"></div>
+    </div>
+    <footer>
+        © 2024 비트코인 가격 정보
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+##### 각 요소의 역할
+- <!DOCTYPE html>: HTML5 문서를 선언합니다.
+- <html>: 문서의 루트 요소입니다.
+- <head>: 메타데이터와 외부 리소스를 포함합니다.
+- <title>: 웹페이지의 제목을 정의합니다.
+- <link>: 외부 CSS 파일을 연결합니다.
+- <script>: 외부 JavaScript 파일을 연결합니다.
+- <body>: 웹페이지의 본문을 포함합니다.
+- <h1>: 페이지의 주요 제목입니다.
+- <button>: 클릭할 수 있는 버튼입니다.
+- <div>: 컨테이너 요소로, 여러 요소를 그룹화합니다.
+- <span>: 인라인 요소로, 텍스트를 감쌀 때 사용합니다.
+- <footer>: 페이지의 푸터를 정의합니다.
+
+#### 3. CSS
+
+##### 스타일링 기본
+CSS (Cascading Style Sheets)는 HTML 요소의 스타일을 정의하는 언어입니다. 이번 프로젝트의 CSS 파일은 다음과 같습니다.
+
+css
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.container {
+    background: var(--container-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.price {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: var(--text-color);
+}
+
+#binance-price, #upbit-price, #exchange-rate, #kimchi-premium, #total-mined {
+    font-size: 1.8em;
+    color: #ff9900;
+}
+
+footer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+.chart-container {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+}
+
+.light-mode {
+    --bg-color: #f0f0f0;
+    --text-color: #333;
+    --container-bg: white;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --container-bg: #1e1e1e;
+}
+
+body.light-mode {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+body.dark-mode {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+#theme-toggle {
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+##### 클래스와 ID 선택자의 차이
+- **클래스 선택자**: 여러 요소에 적용할 수 있으며, 점(.)을 사용하여 선택합니다.
+  
+css
+  .price {
+      font-size: 1.5em;
+  }
+
+- **ID 선택자**: 유일한 요소에 적용되며, 샵(#)을 사용하여 선택합니다.
+  
+css
+  #binance-price {
+      color: #ff9900;
+  }
+
+
+##### 레이아웃 구성
+- body: 웹페이지의 기본 레이아웃을 설정합니다.
+- h1: 페이지의 주요 제목 스타일을 정의합니다.
+- container: 주요 콘텐츠 영역을 스타일링합니다.
+- price: 가격 정보를 포함한 요소를 스타일링합니다.
+- footer: 페이지의 푸터를 스타일링합니다.
+- chart-container: 차트의 크기를 설정합니다.
+
+#### 4. JavaScript
+
+##### 기본 문법
+JavaScript는 웹페이지의 동작을 정의하는 스크립팅 언어입니다. 이번 프로젝트에서 사용된 기본 문법은 다음과 같습니다.
+
+- **변수 선언**: let, const 키워드를 사용하여 변수를 선언합니다.
+  
+javascript
+  let usdToKrwRate = 1300; // 기본 환율 설정
+
+
+- **함수 정의**: function 키워드를 사용하여 함수를 정의합니다.
+  
+javascript
+  async function fetchExchangeRate() {
+      // 코드 내용
+  }
+
+
+- **조건문**: if 키워드를 사용하여 조건문을 작성합니다.
+  
+javascript
+  if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+
+- **반복문**: for, while 키
+
+워드를 사용하여 반복문을 작성합니다.
+  
+javascript
+  while (retries < maxRetries) {
+      // 코드 내용
+  }
+
+
+##### 비동기 함수 (async/await)
+비동기 함수는 async 키워드를 사용하여 정의하며, await 키워드를 사용하여 비동기 작업을 처리할 수 있습니다.
+javascript
+async function fetchExchangeRate() {
+    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const data = await response.json();
+    usdToKrwRate = data.rates.KRW;
+}
+
+
+##### API 호출
+API 호출은 fetch 함수를 사용하여 외부 데이터에 접근합니다.
+javascript
+const response = await fetch('https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT');
+const data = await response.json();
+
+
+##### DOM 조작
+DOM 조작은 document.getElementById 함수를 사용하여 HTML 요소를 선택하고, innerText 속성을 사용하여 요소의 내용을 변경합니다.
+javascript
+document.getElementById('binance-price').innerText = `$${price}`;
+
+
+#### 5. 프로젝트 구성 요소 설명
+
+##### 환율 가져오기 함수
+환율을 가져오는 함수는 fetch 함수를 사용하여 API 호출을 수행하고, 응답 데이터를 파싱하여 환율을 업데이트합니다.
+javascript
+async function fetchExchangeRate() {
+    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const data = await response.json();
+    usdToKrwRate = data.rates.KRW;
+    document.getElementById('exchange-rate').innerText = usdToKrwRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+
+##### 비트코인 가격 가져오기 함수 (바이낸스, 업비트)
+비트코인 가격을 가져오는 함수는 각각의 거래소 API를 호출하여 데이터를 업데이트합니다.
+javascript
+async function fetchBinancePrice() {
+    const response = await fetch('https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT');
+    const data = await response.json();
+    const price = parseFloat(data.price).toFixed(2);
+    document.getElementById('binance-price').innerText = `$${parseFloat(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+async function fetchUpbitPrice() {
+    const response = await fetch('https://api.upbit.com/v1/ticker?markets=KRW-BTC');
+    const data = await response.json();
+    const price = parseFloat(data[0].trade_price).toFixed(0);
+    document.getElementById('upbit-price').innerText = `₩${parseInt(price).toLocaleString('ko-KR')}`;
+}
+
+
+##### 김치 프리미엄 계산 함수
+김치 프리미엄을 계산하는 함수는 업비트와 바이낸스의 비트코인 가격을 비교하여 프리미엄 비율을 계산합니다.
+javascript
+function calculateKimchiPremium() {
+    if (lastBinancePrice !== null && lastUpbitPrice !== null) {
+        const kimchiPremium = ((lastUpbitPrice / usdToKrwRate) - lastBinancePrice) / lastBinancePrice * 100;
+        document.getElementById('kimchi-premium').innerText = `${kimchiPremium.toFixed(2)}%`;
+    }
+}
+
+
+##### 테마 전환 기능
+테마 전환 기능은 버튼을 클릭하여 다크 모드와 라이트 모드를 전환합니다.
+javascript
+function toggleTheme() {
+    const body = document.body;
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (body.classList.contains('light-mode')) {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        themeToggleBtn.innerText = '라이트 모드';
+    } else {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        themeToggleBtn.innerText = '다크 모드';
+    }
+}
+document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+
+##### TradingView 차트
+TradingView 차트는 외부 라이브러리를 사용하여 비트코인 가격 차트를 표시합니다.
+javascript
+new TradingView.widget({
+    "container_id": "tradingview-chart",
+    "autosize": true,
+    "symbol": "BINANCE:BTCUSDT",
+    "interval": "15",
+    "timezone": "Etc/UTC",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#f1f3f6",
+    "enable_publishing": false,
+    "allow_symbol_change": true,
+    "studies": [
+        "Volume@tv-basicstudies"
+    ],
+    "show_popup_button": true,
+    "popup_width": "1000",
+    "popup_height": "650"
+});
+
+
+#### 6. 전체 코드 설명
+
+##### HTML
+HTML 파일은 웹페이지의 구조를 정의합니다.
+
+##### CSS
+CSS 파일은 웹페이지의 스타일을 정의합니다.
+
+##### JavaScript
+JavaScript 파일은 웹페이지의 동작을 정의합니다. 모든 함수가 어떻게 서로 연결되어 있는지 설명합니다.
+
+#### 7. 추가 학습 자료
+- **추천 도서**
+    - "JavaScript: The Good Parts" by Douglas Crockford
+    - "Eloquent JavaScript" by Marijn Haverbeke
+    - "HTML and CSS: Design and Build Websites" by Jon Duckett
+- **온라인 강의**
+    - Codecademy
+    - freeCodeCamp
+    - Udemy
+- **실습 프로젝트**
+    - 간단한 계산기 만들기
+    - 할 일 목록 만들기
+    - 날씨 앱 만들기
